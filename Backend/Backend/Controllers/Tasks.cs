@@ -1,5 +1,6 @@
 ﻿using Backend.APITasksManager.Dto;
 using Backend.APITasksManager.IRepository;
+using Backend.APITasksManager.Requests;
 using Backend.APITasksManager.Responses;
 using Backend.Requests;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,34 @@ namespace Backend.Controllers
             }
 
             return Ok(new { message = "Task created successfully", task });
+        }
+
+        [HttpPost]
+        [Route("DeleteTask")]
+        public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
+        {
+            var response = await _tasksRepository.DeleteTask(request);
+
+            if (response == null)
+            {
+                return BadRequest(new { message = "Ocurrió un error al intentar eliminar la tarea" });
+            }
+
+            return Ok(new { message = "Task deleted successfully", request.TaskId});
+        }
+
+        [HttpPost]
+        [Route("UpdateTask")]
+        public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequest request)
+        {
+            var response = await _tasksRepository.UpdateTask(request);
+
+            if (response == null)
+            {
+                return BadRequest(new { message = "Ocurrió un error al intentar actualizar la tarea" });
+            }
+
+            return Ok(new { message = "Task created successfully", request.TaskId});
         }
 
         [HttpPost]

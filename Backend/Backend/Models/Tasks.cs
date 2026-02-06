@@ -13,5 +13,6 @@ namespace Backend.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public bool IsCompleted { get; set; } = false;
+        public bool Active { get; set; } = true;
     }
 }
