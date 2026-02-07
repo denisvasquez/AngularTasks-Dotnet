@@ -8,5 +8,6 @@ namespace Backend.Data
         {
         }
         public DbSet<Backend.Models.Tasks> Tasks { get; set; }
+        public DbSet<Backend.Models.Users> Users { get; set; }
     }
 }

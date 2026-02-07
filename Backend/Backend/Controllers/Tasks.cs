@@ -3,6 +3,7 @@ using Backend.APITasksManager.IRepository;
 using Backend.APITasksManager.Requests;
 using Backend.APITasksManager.Responses;
 using Backend.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace Backend.Controllers
             _tasksRepository = tasksRepository;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("CreateTask")]
         public async Task<IActionResult> CreateTask([FromBody] CreateTaskRequest task)
@@ -33,6 +35,7 @@ namespace Backend.Controllers
             return Ok(new { message = "Task created successfully", task });
         }
 
+        [Authorize]
         [HttpPost]
         [Route("DeleteTask")]
         public async Task<IActionResult> DeleteTask([FromBody] DeleteTaskRequest request)
@@ -47,6 +50,7 @@ namespace Backend.Controllers
             return Ok(new { message = "Task deleted successfully", request.TaskId});
         }
 
+        [Authorize]
         [HttpPost]
         [Route("UpdateTask")]
         public async Task<IActionResult> UpdateTask([FromBody] UpdateTaskRequest request)
@@ -61,12 +65,19 @@ namespace Backend.Controllers
             return Ok(new { message = "Task created successfully", request.TaskId});
         }
 
+        [Authorize]
         [HttpPost]
         [Route("GetTasksByUser")]
-        public IActionResult GetTasksByUser([FromBody] GetAllTasksRequest request)
+        public async Task<IActionResult> GetTasksByUser([FromBody] GetTasksRequest request)
         {
-            // Logic to create a task would go here.
-            return Ok(new { message = "Tasks" });
+            var response = await _tasksRepository.GetTasksByUserId(request);
+
+            if (response.UserId == 0)
+            {
+                return BadRequest(new { message = response.Message });
+            }
+
+            return Ok(new { message = $"Tasks user '{request.UserId}'", tasks = response.Tasks });
         }
 
     }
