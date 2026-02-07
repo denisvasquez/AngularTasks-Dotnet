@@ -1,0 +1,10 @@
+﻿namespace Backend.APITasksManager.Requests
+{
+    public class UpdateTaskRequest
+    {
+        public int TaskId { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public bool? IsCompleted { get; set; }
+    }
+}
