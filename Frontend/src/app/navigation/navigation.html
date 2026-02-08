@@ -1,0 +1,13 @@
+<nav class="bg-gray-800 h-[2.5rem] flex items-center px-4 space-x-4 text-white">
+  <a routerLink="/home">Home</a>
+  @if (user) {
+    <a routerLink="/tasks">Tasks</a>
+    <button (click)="logout()" class="ml-auto text-red-500 hover:underline hover:cursor-pointer">
+      Logout
+    </button>
+  } @else {
+    <a routerLink="/login" class="ml-auto text-blue-500 hover:underline hover:cursor-pointer">
+      Login
+    </a>
+  }
+</nav>

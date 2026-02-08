@@ -1,4 +1,5 @@
-﻿using Backend.Models;
+﻿using Backend.APITasksManager.Dto;
+using Backend.Models;
 
 namespace Backend.APITasksManager.Responses
 {
@@ -6,6 +7,6 @@ namespace Backend.APITasksManager.Responses
     {
         public int? UserId { get; set; }
         public string? Message { get; set; }
-        public List<Tasks> Tasks { get; set; } = new();
+        public List<TaskDTO> Tasks { get; set; } = new();
     }
 }

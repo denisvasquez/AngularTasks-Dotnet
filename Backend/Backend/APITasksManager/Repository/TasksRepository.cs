@@ -129,14 +129,18 @@ namespace Backend.APITasksManager.Repository
 
             var tasks = await _dbContext.Tasks
                 .Where(t => t.UserId == request.UserId && t.Active == true)
-                .Select(t => new Tasks
+                .Select(t => new TaskDTO
                 {
                     Id = t.Id,
                     Title = t.Title,
+                    UserId = t.UserId,
                     Description = t.Description,
-                    CreatedAt = t.CreatedAt,
-                    UpdatedDate = t.UpdatedDate,
-                    IsCompleted = t.IsCompleted
+                    CreatedAt = t.CreatedAt.ToString("HH:mm - dd/MM/yyyy"),
+                    UpdatedDate = t.UpdatedDate.HasValue ?
+                        t.UpdatedDate.Value.ToString("HH:mm - dd/MM/yyyy")
+                        : null,
+                    IsCompleted = t.IsCompleted,
+                    Active = t.Active
                 })
                 .ToListAsync();
 

@@ -72,6 +72,11 @@ namespace Backend.Controllers
         {
             var response = await _tasksRepository.GetTasksByUserId(request);
 
+            if (response == null)
+            {
+                return BadRequest(new { message = "An error was ocurred" });
+            }
+
             if (response.UserId == 0)
             {
                 return BadRequest(new { message = response.Message });

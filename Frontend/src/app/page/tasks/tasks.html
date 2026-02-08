@@ -1,8 +1,118 @@
-<h2>Tasks</h2>
+<div class="w-full p-10 flex flex-col">
+  @if (addingTask) {
+    <div
+      class="flex-col bg-white p-4 mb-3 rounded-lg shadow-md flex items-center justify-between border border-gray-300"
+    >
+      <div class="flex justify-between w-full">
+        <div class="flex w-full">
+          <div class="flex flex-col w-full">
+            <input
+              type="text"
+              [(ngModel)]="newTask.title"
+              placeholder="Title"
+              class="mb-1 h-10 pl-2 w-full rounded-lg border border-gray-300"
+            />
+            <textarea
+              [(ngModel)]="newTask.description"
+              placeholder="Description"
+              class="min-h-10 max-h-20 pl-2 w-full rounded-lg border border-gray-300"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-between w-full mt-1">
+        <button (click)="createTask()" class="h-10 bg-green-600 w-full text-white rounded-lg mt-2">
+          Save
+        </button>
+        <button (click)="cancelAdd()" class="h-10 bg-blue-500 w-full text-white rounded-lg mt-2">
+          Cancel
+        </button>
+      </div>
+    </div>
+  } @else {
+    <button
+      (click)="toggleAdd()"
+      class="self-end text-blue-500 hover:underline hover:cursor-pointer mb-2"
+    >
+      + Add Task
+    </button>
+  }
+  <div
+    *ngFor="let task of tasks()"
+    class="flex-col bg-white p-4 mb-3 rounded-lg shadow-md flex items-center justify-between border border-gray-300"
+  >
+    <div class="flex justify-between w-full">
+      <p>{{ task.updatedDate ? `${task.updatedDate} (updated)` : task.createdAt }}</p>
+      <div class="flex">
+        <button
+          [class.hidden]="task.isCompleted"
+          class="text-blue-500 hover:underline"
+          (click)="toggleEdit(task)"
+        >
+          Edit
+        </button>
+        <button class="text-red-500 hover:underline ml-5" (click)="deleteTask(task.id)">
+          Delete
+        </button>
+      </div>
+    </div>
+    @if (taskEdit.id === task.id) {
+      <div class="flex justify-between w-full mt-1">
+        <div class="flex w-full">
+          <div class="flex flex-col w-full">
+            <input
+              type="text"
+              [(ngModel)]="taskEdit.title"
+              class="mb-1 h-10 pl-2 w-full rounded-lg border border-gray-300"
+            />
+            <textarea
+              [(ngModel)]="taskEdit.description"
+              class="min-h-10 max-h-20 pl-2 w-full rounded-lg border border-gray-300"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <button
+        (click)="updateTask(taskEdit)"
+        class="h-10 bg-green-600 w-full text-white rounded-lg mt-2"
+      >
+        Save
+      </button>
+      <button (click)="cancelEdit()" class="h-10 bg-blue-500 w-full text-white rounded-lg mt-2">
+        Cancel
+      </button>
+    } @else {
+      <div class="flex justify-between w-full mt-1">
+        <div class="flex w-full">
+          <input
+            type="checkbox"
+            [checked]="task.isCompleted"
+            class="mr-3"
+            (change)="doneTask(task.id, !task.isCompleted)"
+          />
+          <div class="flex flex-col w-full">
+            <span [class.line-through]="task.isCompleted">{{ task.title }}</span>
+            <div class="border-b border-gray-400"></div>
 
-<ul>
-  <li *ngFor="let task of tasks()">
-    <input type="checkbox" [checked]="task.completed" />
-    {{ task.title }}
-  </li>
-</ul>
+            @if (showTask?.id === task.id) {
+              <div [class.line-through]="task.isCompleted" class="text-gray-700">
+                {{ task.description }}
+              </div>
+              <div>
+                <button class="text-gray-500 hover:underline ml-5" (click)="toggleShow(task)">
+                  See less...
+                </button>
+              </div>
+            } @else {
+              <div>
+                <button class="text-gray-500 hover:underline ml-5" (click)="toggleShow(task)">
+                  See more...
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
