@@ -22,7 +22,7 @@ export class Tasks implements OnInit {
     createdAt: new Date(),
     active: true,
   };
-  showTask: Task | null = null;
+  showTask: number = 0;
   addingTask = false;
   newTask: NewTask = {
     title: '',
@@ -43,12 +43,20 @@ export class Tasks implements OnInit {
   }
 
   async toggleEdit(task: Task): Promise<void> {
-    this.taskEdit = task;
+    this.taskEdit = { ...task };
   }
 
   async toggleShow(task: Task): Promise<void> {
-    if (!this.showTask) this.showTask = task;
-    else this.showTask = null;
+    if (this.showTask === 0) {
+      this.showTask = task.id;
+      return;
+    }
+
+    if (this.showTask === task.id) {
+      this.showTask = 0;
+    } else {
+      this.showTask = task.id;
+    }
   }
 
   async toggleAdd(): Promise<void> {
@@ -108,6 +116,6 @@ export class Tasks implements OnInit {
     await this.taskService.deleteTask(id);
     const tasks: Task[] = await this.taskService.getTasks();
     this.tasks.set(tasks);
-    this.showTask = null;
+    this.showTask = 0;
   }
 }

@@ -62,7 +62,7 @@ namespace Backend.Controllers
                 return BadRequest(new { message = "Ocurrió un error al intentar actualizar la tarea" });
             }
 
-            return Ok(new { message = "Task created successfully", request.TaskId});
+            return Ok(new { message = "Task updated successfully", request.TaskId});
         }
 
         [Authorize]

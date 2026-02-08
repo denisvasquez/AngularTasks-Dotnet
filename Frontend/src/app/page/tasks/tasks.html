@@ -94,7 +94,7 @@
             <span [class.line-through]="task.isCompleted">{{ task.title }}</span>
             <div class="border-b border-gray-400"></div>
 
-            @if (showTask?.id === task.id) {
+            @if (showTask === task.id) {
               <div [class.line-through]="task.isCompleted" class="text-gray-700">
                 {{ task.description }}
               </div>
